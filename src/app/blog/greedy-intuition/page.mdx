@@ -1,0 +1,237 @@
+import ArticleHeader from "@/components/mdx/article-header"
+
+export const article = {
+  author: 'Sarvagya Kumar',
+  authorImage: '/default-avatar.png',
+  date: '2025-07-09',
+  title: 'The Counterintuitive Truth About Greedy Algorithms: Why Being Selfish Sometimes Leads to Perfect Solutions',
+  description: 'Discover why the most elegant solutions to complex problems come from a strategy that sounds too simple to work—and when your greedy instincts can be mathematically trusted.'
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+}
+
+<ArticleHeader {...article} />
+
+# The Counterintuitive Truth About Greedy Algorithms: Why Being Selfish Sometimes Leads to Perfect Solutions
+
+> *"The first principle is that you must not fool yourself—and you are the easiest person to fool."* — Richard Feynman
+
+*What if I told you that the most elegant solutions to some of computer science's hardest problems come from a strategy that sounds almost too simple to work? What if the secret wasn't complex calculations or sophisticated planning, but something as basic as human greed?*
+
+Feynman's warning about self-deception is particularly relevant when studying greedy algorithms. These algorithms feel so intuitive, so natural, that we often assume they work without understanding why. This false confidence can lead us astray when we apply greedy strategies to problems where they don't belong. The key is building genuine understanding—not just memorizing when to use them, but developing the intuition to recognize when our greedy instincts can be mathematically trusted.
+
+## Building Intuition: The Restaurant Revelation
+
+You've been using greedy algorithms your entire life without realizing it. When you're getting dressed in the morning and running late, you don't calculate every possible outfit combination. You grab the cleanest shirt, the most comfortable pants, the shoes that slip on fastest. You make the best choice available at each moment and trust it will work out.
+
+Let's build our intuition with a concrete example. Imagine you're managing a popular restaurant with limited seating. Multiple parties want to book your main dining room throughout the day, each with different arrival and departure times. You want to maximize the number of parties you can serve.
+
+Your first instinct might be to prioritize the shortest reservations first—after all, quick turnovers mean more customers, right? Let's test this intuition:
+
+**Reservation requests:**
+- Party A: 7:00 PM to 8:30 PM (1.5 hours)
+- Party B: 7:00 PM to 9:00 PM (2 hours)
+- Party C: 8:00 PM to 9:00 PM (1 hour - shortest!)
+- Party D: 8:30 PM to 10:00 PM (1.5 hours)
+
+Following our "shortest first" greedy strategy, we'd book Party C first. But this decision forces us to reject both Party A and Party D, leaving us with just one booking for the entire evening. However, if we had booked Party A first, then Party D immediately after, we'd have two bookings instead of one.
+
+**The key insight:** Not all greedy strategies are created equal. The choice of what to be greedy about determines everything. This is where Feynman's principle applies—we can't fool ourselves into thinking any greedy approach will work.
+
+The correct greedy strategy isn't "shortest reservation first" but "earliest end time first." Why? Because choosing the reservation that ends earliest always leaves you with the maximum remaining time for future bookings. This is the foundation of the greedy choice property.
+
+## Understanding Through Code: From Intuition to Implementation
+
+Now let's see how this intuition translates into code. The activity selection problem (our restaurant example) has an elegant solution:
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Activity {
+    int start, end;
+    Activity(int s, int e) : start(s), end(e) {}
+};
+
+int maxActivities(vector<Activity>& activities) {
+    // Sort by end time - this is our greedy choice!
+    sort(activities.begin(), activities.end(), 
+         [](const Activity& a, const Activity& b) {
+             return a.end < b.end;
+         });
+    
+    int count = 1;  // First activity is always selected
+    int lastEnd = activities[0].end;
+    
+    for (int i = 1; i < activities.size(); i++) {
+        // Greedy choice: if current activity starts after last one ends
+        if (activities[i].start >= lastEnd) {
+            count++;
+            lastEnd = activities[i].end;
+        }
+    }
+    return count;
+}
+```
+
+The beauty of this code lies in its simplicity. We sort once by end time, then make a single pass through the activities. Each decision is permanent—we never reconsider a choice. This is the greedy choice property in action.
+
+Let's look at another classic example—the fractional knapsack problem:
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Item {
+    double value, weight, ratio;
+    Item(double v, double w) : value(v), weight(w), ratio(v/w) {}
+};
+
+double fractionalKnapsack(vector<Item>& items, double capacity) {
+    // Sort by value-to-weight ratio - our greedy criterion
+    sort(items.begin(), items.end(), 
+         [](const Item& a, const Item& b) {
+             return a.ratio > b.ratio;
+         });
+    
+    double totalValue = 0.0;
+    
+    for (const auto& item : items) {
+        if (capacity >= item.weight) {
+            // Take the whole item
+            capacity -= item.weight;
+            totalValue += item.value;
+        } else {
+            // Take fraction of the item
+            totalValue += item.value * (capacity / item.weight);
+            break; // Knapsack is full
+        }
+    }
+    
+    return totalValue;
+}
+```
+
+This implementation reveals why the fractional knapsack has the greedy choice property. At each step, we're taking the item (or fraction) that gives us the maximum value per unit weight. Since we can take fractions, there's never a scenario where taking the highest-ratio item prevents us from achieving the optimal solution.
+
+## When Greed Betrays Us: Learning from Failure
+
+To truly understand greedy algorithms, we must also understand when they fail. Consider the classic coin change problem with a twist. In most currency systems, the greedy approach works perfectly. To make change for 67 cents, you'd use two quarters (50 cents), one dime (10 cents), one nickel (5 cents), and two pennies (2 cents) for a total of six coins.
+
+But what happens with coins worth 1, 3, and 4 units? To make change for 6 units:
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int greedyCoinChange(vector<int>& coins, int amount) {
+    // Sort coins in descending order - greedy choice
+    sort(coins.rbegin(), coins.rend());
+    
+    int count = 0;
+    for (int coin : coins) {
+        while (amount >= coin) {
+            amount -= coin;
+            count++;
+        }
+    }
+    
+    return (amount == 0) ? count : -1; // -1 if impossible
+}
+
+// For coins = [4, 3, 1] and amount = 6:
+// Greedy picks: 4 + 1 + 1 = 3 coins
+// Optimal is: 3 + 3 = 2 coins
+```
+
+The greedy algorithm chooses one 4-unit coin, then two 1-unit coins, totaling three coins. However, the optimal solution is two 3-unit coins, requiring only two coins total. This is where Feynman's principle is crucial—we can't fool ourselves into thinking greedy always works.
+
+## Solving Problems: Building Real Understanding
+
+Let's work through some problems to solidify our understanding:
+
+### Problem 1: Meeting Rooms
+**Given:** Array of meeting time intervals
+**Goal:** Determine if a person can attend all meetings
+
+**Intuition:** Sort by start time. If any meeting starts before the previous one ends, there's a conflict.
+
+**Why greedy works:** We only need to check consecutive meetings after sorting. If we can attend meetings 1-2 and 2-3, we can attend 1-3.
+
+### Problem 2: Gas Station
+**Given:** Array of gas amounts and costs to travel to next station
+**Goal:** Find starting station to complete the circuit
+
+**Intuition:** If we can't reach station B from station A, then we can't reach B from any station between A and B either.
+
+**Why greedy works:** The problem has optimal substructure—if we can complete the circuit starting from station X, then X is the unique answer.
+
+### Problem 3: Jump Game
+**Given:** Array where each element represents max jump length from that position
+**Goal:** Determine if we can reach the last index
+
+**Intuition:** Keep track of the furthest position we can reach. If we can reach position i, we can reach any position ≤ i.
+
+**Why greedy works:** We only care about the maximum reachable position, not the specific path.
+
+## The Mathematical Foundation: Why Some Problems Are Greedy-Friendly
+
+For a problem to be solvable by a greedy algorithm, it must satisfy two properties:
+
+### 1. Optimal Substructure
+The optimal solution to a problem contains optimal solutions to its subproblems. Think of it like a master chef creating a perfect dish—if the final meal is truly optimal, then every component must also be optimal for its specific role.
+
+### 2. Greedy Choice Property
+Making the locally optimal choice at each step leads to a globally optimal solution. This is the more restrictive property and requires careful analysis.
+
+**The Exchange Argument:** To prove a greedy algorithm is correct, we typically use an exchange argument. Assume there's an optimal solution that doesn't follow your greedy choice, then show you can modify it to use your greedy choice without making it worse. This contradiction proves your greedy algorithm is correct.
+
+## Practice Problems: Applying Your Understanding
+
+Now that we've built intuition and understanding, here are some LeetCode problems to practice:
+
+### Easy Level:
+1. **[Best Time to Buy and Sell Stock II (122)](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)** - Buy and sell stocks for maximum profit
+2. **[Assign Cookies (455)](https://leetcode.com/problems/assign-cookies/)** - Satisfy children with cookies
+3. **[Lemonade Change (860)](https://leetcode.com/problems/lemonade-change/)** - Make change for customers
+
+### Medium Level:
+4. **[Gas Station (134)](https://leetcode.com/problems/gas-station/)** - Find starting position to complete circuit
+5. **[Jump Game (55)](https://leetcode.com/problems/jump-game/)** - Determine if you can reach the end
+6. **[Meeting Rooms II (253)](https://leetcode.com/problems/meeting-rooms-ii/)** - Minimum meeting rooms needed
+7. **[Non-overlapping Intervals (435)](https://leetcode.com/problems/non-overlapping-intervals/)** - Remove minimum intervals to make non-overlapping
+
+### Hard Level:
+8. **[Candy (135)](https://leetcode.com/problems/candy/)** - Distribute candies with rating constraints
+9. **[Minimum Number of Taps to Open to Water a Garden (1326)](https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/)** - Water garden with minimum taps
+
+## The Greedy Algorithm Mindset: Trusting Mathematical Intuition
+
+The most remarkable aspect of greedy algorithms is how they bridge the gap between intuition and mathematical rigor. When you're running late and grab the fastest outfit, you're not performing complex calculations—you're following a heuristic that happens to be optimal for your specific constraints and objectives.
+
+But remember Feynman's warning: don't fool yourself. The approach that feels almost too simple to work is sometimes the most elegant and efficient solution, but only when the problem structure supports it. The key is learning to recognize when your intuitive greedy choices align with mathematical optimality.
+
+Ask yourself these questions:
+1. Does this problem have optimal substructure?
+2. Can I identify a greedy choice that leaves me in the best possible position for future decisions?
+3. Can I prove this greedy choice leads to the global optimum?
+
+If all three answers are yes, you might have found not just a solution, but the most beautiful solution possible.
+
+## Conclusion: The Art of Algorithmic Decision-Making
+
+Greedy algorithms remind us that in a world of infinite complexity, sometimes the path to perfection is surprisingly simple. The challenge isn't in the complexity of the solution—it's in the wisdom to recognize when simplicity is sufficient and having the mathematical tools to prove it.
+
+The journey from intuitive problem-solving to mathematically rigorous optimization is one of the most rewarding paths in computer science. Start with the problems that feel natural, understand why they work through code, solve problems to build intuition, and gradually develop your sense for when greed becomes mathematical elegance.
+
+Remember: the first principle is that you must not fool yourself. Build genuine understanding, not just pattern recognition. The greedy algorithm that works is beautiful in its simplicity—the one that doesn't work is a lesson in the importance of mathematical rigor.
+
+---
+
+**Ready to master the art of algorithmic decision-making?** Start with the LeetCode problems above, build your intuition through practice, and remember—sometimes the most elegant solution is the one that feels almost too simple to work.
