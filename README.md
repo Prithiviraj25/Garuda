@@ -54,6 +54,76 @@ Garuda is a comprehensive cybersecurity platform that combines advanced threat i
 - **Responsive Design**: Mobile-first responsive interface
 - **Dark Theme**: Modern dark theme with excellent readability
 
+## 📋 Project Details
+
+### Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Frontend** | Next.js 15 + TypeScript | Modern React framework with type safety |
+| **Styling** | Tailwind CSS + Radix UI | Utility-first CSS with accessible components |
+| **Backend** | FastAPI (Python) | High-performance API framework |
+| **Database** | SQLite + Pinecone | Local storage + Vector database for semantic search |
+| **AI/ML** | GROQ API | Large language model for threat analysis |
+| **Runtime** | Bun | Fast JavaScript runtime |
+| **Visualization** | D3.js + Three.js | Data visualization and 3D graphics |
+| **Authentication** | Better Auth | Secure user authentication |
+
+### Project Structure
+
+| Directory | Purpose | Key Files |
+|-----------|---------|-----------|
+| `src/app/` | Next.js app router pages | Main application routes |
+| `src/components/` | Reusable UI components | Dashboard, charts, forms |
+| `src/lib/` | Utility functions | Database, API helpers |
+| `python-backend/` | FastAPI backend | Threat analysis APIs |
+| `public/` | Static assets | Images, icons |
+| `docs/` | Documentation | Guides and references |
+
+### Development Timeline
+
+| Phase | Duration | Focus |
+|-------|----------|-------|
+| **Planning & Design** | 1 week | Requirements analysis, UI/UX design |
+| **Frontend Development** | 2 weeks | Dashboard, components, routing |
+| **Backend Development** | 1.5 weeks | API endpoints, database setup |
+| **AI Integration** | 1 week | GROQ API, threat analysis |
+| **Testing & Refinement** | 0.5 weeks | Bug fixes, performance optimization |
+
+### Current Status
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| **User Authentication** | ✅ Complete | Login/logout functionality |
+| **Dashboard** | ✅ Complete | Main dashboard with metrics |
+| **Threat Intelligence** | ✅ Complete | IOC analysis and search |
+| **BCM Analysis** | ✅ Complete | Business impact assessment |
+| **AI Assistant** | ✅ Complete | Natural language queries |
+| **Reports** | ✅ Complete | PDF export functionality |
+| **3D Visualization** | ✅ Complete | Threat landscape view |
+| **Mobile Responsive** | ✅ Complete | Works on all devices |
+
+### API Endpoints
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/threat-intelligence/iocs` | GET | Fetch threat indicators |
+| `/api/bcm/dashboard` | GET | Get BCM analysis data |
+| `/api/ai-assistant/chat` | POST | AI-powered threat queries |
+| `/api/reports/generate` | POST | Generate PDF reports |
+| `/python-backend/search-iocs` | POST | Vector search in Pinecone |
+| `/python-backend/analyze-ioc` | POST | Individual IOC analysis |
+
+### Data Sources
+
+| Source | Type | Purpose |
+|--------|------|---------|
+| **Threat Intelligence APIs** | External | Real-time threat data |
+| **Pinecone Vector DB** | External | Semantic search capabilities |
+| **GROQ AI API** | External | Natural language processing |
+| **Local SQLite** | Internal | User data and preferences |
+| **Sample Data** | Internal | Development and testing |
+
 ## 🖼️ Platform Showcase
 
 ![Garuda Platform](pictures_readme/Screenshot%202025-07-13%20173238.png)
