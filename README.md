@@ -160,20 +160,8 @@ Watch our comprehensive demo showcasing all features:
 
 [![Garuda Demo](pictures_readme/Screenshot%202025-07-13%20172635.png)](#)
 
-*Click the image above to view the demo video locally if you have access to the repository files.*
 
 ## 📁 Additional Resources
-
-### Environment Files & Configuration
-Download the required environment files and configuration from our Google Drive:
-**[🔗 Google Drive - Environment Files & Configuration](https://drive.google.com/drive/folders/12ILoT2AI9WVFNuecB7V2ZxA0WDkIxHyl?usp=sharing)**
-
-This includes:
-- Environment configuration files
-- API keys setup guide
-- Database schemas
-- Additional documentation
-- Sample data files
 
 ### 🏆 Hackathon Submission
 Access our complete Societe Generale hackathon submission materials:
