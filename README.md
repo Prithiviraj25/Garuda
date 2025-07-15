@@ -4,7 +4,7 @@
 
 **🏆 Societe Generale Hackathon Submission**
 
-- **Team Name:** CypherNova
+- **Team Name:** Segfault Syndicate 
 - **Team Members:**
   - Prithviraj N
   - Prachi Sinha
